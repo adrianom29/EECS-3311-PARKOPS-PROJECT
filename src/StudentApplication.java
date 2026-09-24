@@ -3,7 +3,9 @@ import java.util.Map;
 public final class StudentApplication {
     // Raw fixture storage only. Replace or wrap it with your protected domain objects.
     private final Map<String,Object> booking=new LinkedHashMap<>(Fixture.booking());
-    public Map<String,Object> bookingSnapshot() { return Map.copyOf(booking); }
+    public Map<String,Object> bookingSnapshot() { 
+        return Map.copyOf(booking); 
+    }
     public ProposalView propose(String targetId) {
         // TODO D1: validate target and baseline eligibility, generate an ID, capture
         // versions, create PENDING proposal. Never move the booking here.
