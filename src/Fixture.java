@@ -15,14 +15,18 @@ public final class Fixture {
     }
 
     public static List<Map<String, Object>> spaces() {
-        return List.of(space("A17", false, true, false),
+        return List.of(
+                space("A17", false, true, false),
                 space("B12", true, false, false),
                 space("C03", true, false, true),
                 space("D09", true, true, true));
     }
 
     private static Map<String, Object> space(String id, boolean open, boolean occupied, boolean accessible) {
-        return Map.of("id", id, "open", open, "occupied", occupied, "accessible", accessible);
+        return Map.of("id", id, 
+                      "open", open, 
+                      "occupied", occupied, 
+                      "accessible", accessible);
     }
 
     public static String proposalRequest(String target) {

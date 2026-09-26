@@ -5,16 +5,42 @@ public final class StudentApplication {
     // Raw fixture storage only. Replace or wrap it with your protected domain
     // objects.
     private final Map<String, Object> booking = new LinkedHashMap<>(Fixture.booking());
+    private static int idCounter = 1;
 
     public Map<String, Object> bookingSnapshot() {
         return Map.copyOf(booking);
     }
 
-    public ProposalView propose(String targetId) {
+    public ProposalView propose(String targetId) throws IllegalArgumentException{
         // TODO D1: validate target and baseline eligibility, generate an ID, capture
         // versions, create PENDING proposal. Never move the booking here.
         // This starter API reports a rejected target using IllegalArgumentException.
-        throw new UnsupportedOperationException("D1 propose path");
+        DomainRules.requireIdentifier(targetId);
+
+        Map<String, Object> target = Fixture.spaces().stream()
+                                    .filter(space -> space.get("id").equals(targetId))
+                                    .findFirst()
+                                    .orElseThrow(() -> new IllegalArgumentException());
+        
+        //if not open or occupied
+        if (!(boolean)target.get("open") || (boolean)target.get("occupied")){
+            throw new IllegalArgumentException();
+        }
+
+        String proposalId = targetId + "-" + idCounter;
+        idCounter++;
+        proposalId = proposalId.toUpperCase();
+        if (proposalId.length() > 16){
+            proposalId = proposalId.substring(0, 16);
+        }
+
+        String bookingId = (String)booking.get("id");
+        int bookingVersion = (int)booking.get("version");
+
+        ProposalView result = new ProposalView(proposalId, bookingId, targetId, bookingVersion, 1, "PENDING");
+        return result;
+
+        //throw new UnsupportedOperationException("D1 propose path");
     }
 
     public String run(ModelProvider provider, int limit) {
