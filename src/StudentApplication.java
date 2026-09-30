@@ -11,26 +11,26 @@ public final class StudentApplication {
         return Map.copyOf(booking);
     }
 
-    public ProposalView propose(String targetId) throws IllegalArgumentException{
+    public ProposalView propose(String targetId) throws IllegalArgumentException {
         // TODO D1: validate target and baseline eligibility, generate an ID, capture
         // versions, create PENDING proposal. Never move the booking here.
         // This starter API reports a rejected target using IllegalArgumentException.
         DomainRules.requireIdentifier(targetId);
 
         Map<String, Object> target = Fixture.spaces().stream()
-                                    .filter(space -> space.get("id").equals(targetId))
-                                    .findFirst()
-                                    .orElseThrow(() -> new IllegalArgumentException());
-        
-        //if not open or occupied
-        if (!(boolean)target.get("open") || (boolean)target.get("occupied")){
+                .filter(space -> space.get("id").equals(targetId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException());
+
+        // if not open or occupied
+        if (!(boolean) target.get("open") || (boolean) target.get("occupied")) {
             throw new IllegalArgumentException();
         }
 
         String proposalId = targetId + "-" + idCounter;
         idCounter++;
         proposalId = proposalId.toUpperCase();
-        if (proposalId.length() > 16){
+        if (proposalId.length() > 16) {
             proposalId = proposalId.substring(0, 16);
         }
 
@@ -40,7 +40,7 @@ public final class StudentApplication {
         ProposalView result = new ProposalView(proposalId, bookingId, targetId, bookingVersion, 1, "PENDING");
         return result;
 
-        //throw new UnsupportedOperationException("D1 propose path");
+        // throw new UnsupportedOperationException("D1 propose path");
     }
 
     public String run(ModelProvider provider, int limit) {
